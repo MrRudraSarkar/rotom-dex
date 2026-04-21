@@ -1,0 +1,3 @@
+- ForeignKey=("pokemon.id") typo — remove the = sign, correct is ForeignKey("pokemon.id")
+- Column(float) typo — must be uppercase Column(Float), lowercase float is a Python built-in
+- database "rotomdex" does not exist — PostgreSQL service was running but database hadn't been created yet. Fix: psql -U postgres → CREATE DATABASE rotomdex;

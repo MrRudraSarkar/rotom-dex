@@ -67,7 +67,7 @@ class Pokemon(Base):
     # secondary=... points to the junction table that connects the two models
     # back_populates=... creates the reverse link on the other model
     types = relationship("Type", secondary=pokemon_types, back_populates="pokemon")
-    moves = relationship("Move", secondary=pokemon_types, back_populates="pokemon")
+    moves = relationship("Moves", secondary=pokemon_moves, back_populates="pokemon")
     abilities = relationship("Ability", secondary=pokemon_abilities, back_populates="pokemon")
 
     # uselist=False - tells SQLAlchemy this is one=to-one, not many-to-many
@@ -117,11 +117,11 @@ class Moves(Base):
     # physical -> uses attack/defense stats to calculate damage
     # special -> uses special attack/special defense stats to calculate damage
     # status -> deals no damage, applies status effects
-    damange_class = Column(String)
+    damage_class = Column(String)
 
     description = Column(Text)
 
-    pokemon = relationship("Pokemon", back_populates="moves")
+    pokemon = relationship("Pokemon", secondary=pokemon_moves, back_populates="moves")
 
 class Ability(Base):
     __tablename__="abilities"
@@ -130,7 +130,7 @@ class Ability(Base):
     name = Column(String, unique=True)
     description = Column(Text)
 
-    pokemon = relationship("Pokemon", back_populates="abilities")
+    pokemon = relationship("Pokemon", secondary=pokemon_abilities, back_populates="abilities")
 
 class Item(Base):
     __tablename__="items"
@@ -139,6 +139,7 @@ class Item(Base):
     name = Column(String)
     category = Column(String) # pokeball, medicine, held items, berries etc...
     description = Column(Text)
+    cost = Column(Integer)
 
 class TypeEffectiveness(Base):
     __tablename__ = "type_effectiveness"

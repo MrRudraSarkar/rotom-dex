@@ -69,8 +69,8 @@ class PokemonDetailSchema(BaseModel):
     height: Optional[int] = None
     weight: Optional[int] = None
     base_experience: Optional[int] = None
-    sprite_url: Optional[int] = None
-    description: Optional[int] = None
+    sprite_url: Optional[str] = None
+    description: Optional[str] = None
     types: List[TypeSchema] = []
     stats: Optional[StatsSchema] = None
     moves: List[MoveSchema] = []

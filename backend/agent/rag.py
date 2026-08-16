@@ -14,11 +14,11 @@ load_dotenv()
 
 # ---- Setup ----
 
-# Persistent Client tells chromadb to save vectors to disk
-# this means our vectors survive netween restarts -  we don't re-embed every time
-# the path is where ChromaDB will create it's storage files
-# we store it at the project root level, outsidde backend/
-chroma_client = chromadb.PersistentClient(path="../../chroma_db")
+# __file__ is the absolute path to rag.py
+# we  navigate up twice to reach the project root where chroma_db lives
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+CHROMA_PATH = os.path.join(BASE_DIR, "chroma_db")
+chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
 
 # a collection in chromadb is like a table in postgreSQL
 # it groups related vectors together

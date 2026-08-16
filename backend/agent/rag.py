@@ -78,3 +78,34 @@ def add_pokemon_to_chromadb(pokemon_id, name, description):
         ids=[str(pokemon_id)]
     )
 
+def search_pokemon_lore(query, n_results=3):
+    # Search chroma db for pokemon descriptions most relevant to the query
+    # this is the function Rotom will call when answering lore questions
+
+    # convert the search query into a vector using the same embedding model
+    # it MUST be the same model used during seeding — otherwise vectors are
+    # in different "spaces" and similarity comparisons become meaningless
+    query_vector = embed_text(query)
+
+    # query ChromaDB for the n most similar vectors to our query vector
+    # n_results=3 means return the 3 most relevant pokemon descriptions
+    # ChromaDB compares vectors using cosine similarity — vectors pointing
+    # in similar directions (similar meaning) get higher similarity scores
+    results = collection.query(
+        query_embeddings=[query_vector],
+        n_results=n_results
+    )
+
+    # results["documents"] is a list of lists — we flatten it to a simple list
+    # e.g. [["Mewtwo desc", "Mew desc", "Alakazam desc"]]
+    # becomes ["Mewtwo desc", "Mew desc", "Alakazam desc"]
+    documents = results.get("documents", [[]])[0]
+    metadata = results.get("metadata", [[]])[0]
+
+    # zip pairs each document with its metadata so we know which pokemon it belongs to
+    # returns a list of dicts that Rotom can easily read and use
+    return [
+        {"text": doc, "metadata": meta}
+        for doc, meta in zip(documents, metadata)
+    ]
+

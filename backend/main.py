@@ -30,8 +30,8 @@ app.add_middleware(
 # tags= groups endpoints together in the /docs UI
 
 app.include_router(pokemon.router, prefix="/pokemon", tags=["Pokemon"])
-app.include_router(moves.route, prefix="/moves", tags=["Moves"])
-app.include_router(items.router, prefix="/items", tags=["Items"])
+# app.include_router(moves.route, prefix="/moves", tags=["Moves"])
+# app.include_router(items.router, prefix="/items", tags=["Items"])
 
 # a simple root endpoint to confirm the API is running
 # this is the first thing we'll test after starting the server
